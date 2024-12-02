@@ -1,6 +1,7 @@
-﻿namespace IX0WHB.Views
+﻿using IX0WHB.Models;
+namespace IX0WHB.Views
 {
-    public static class ConsoleView
+    internal static class ConsoleView
     {
         public static void ShowMenu()
         {
@@ -9,10 +10,11 @@
             Console.WriteLine("2. Mérkőzések szűrése hazai gólok szerint");
             Console.WriteLine("3. Mérkőzés hozzáadása");
             Console.WriteLine("4. Mentés fájlba");
+            Console.WriteLine("5. Tabella megjelenítése");
             Console.WriteLine("0. Kilépés");
         }
 
-        public static void ShowMatches(List<IX0WHB.Models.Match> matches)
+        public static void ShowMatches(List<Match> matches)
         {
             Console.WriteLine("\nMérkőzések:");
             if (matches.Count == 0)
@@ -29,6 +31,30 @@
                     $"Hazai gólok: {match.HomeGoals}, Vendég gólok: {match.AwayGoals}");
             }
         }
+
+        public static void ShowTable(List<TeamStats> table)
+        {
+            if (table == null || table.Count == 0)
+            {
+                Console.WriteLine("Nincs adat a tabella megjelenítéséhez.");
+                return;
+            }
+            Console.WriteLine("\nTabella:");
+            Console.WriteLine(new string('-', 90));
+            Console.WriteLine(
+                $"{"Helyezés",-10} | {"Csapat neve",-20} | {"Lejátszott",-15} | {"Győzelem",-10} | {"Döntetlen",-10} | {"Vereség",-10} | {"Lőtt gólok",-10} | {"Kapott gólok",-10} | {"Pontszám",-10}");
+            Console.WriteLine(new string('-', 90));
+            foreach (var row in table)
+            {
+                Console.WriteLine(
+                    $"{row.Position,-10} | {row.TeamName,-20} | {row.Played,-15} | {row.Wins,-10} | {row.Draws,-10} | {row.Losses,-10} | {row.Scored,-10} | {row.Conceded,-10} | {row.Points,-10}");
+            }
+
+            Console.WriteLine(new string('-', 90));
+        }
+
+
+
 
         public static int GetIntegerInput(string prompt)
         {

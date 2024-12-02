@@ -34,6 +34,12 @@ namespace IX0WHB.Models
         {
             try
             {
+                string directory = "IX0WHB";
+                if (!Directory.Exists(directory))
+                {
+                    Directory.CreateDirectory(directory);
+                }
+
                 string json = JsonSerializer.Serialize(matches, new JsonSerializerOptions { WriteIndented = true });
                 File.WriteAllText(_filePath, json);
                 Console.WriteLine("Adatok sikeresen mentve.");
@@ -43,5 +49,6 @@ namespace IX0WHB.Models
                 Console.WriteLine($"Hiba a fájl mentésekor: {ex.Message}");
             }
         }
+
     }
 }
