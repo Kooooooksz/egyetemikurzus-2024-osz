@@ -43,6 +43,9 @@ namespace IX0WHB.Controllers
                     case "0":
                         exit = true;
                         break;
+                    case "6":
+                        DeleteMatch();
+                        break;
                     default:
                         Console.WriteLine("Érvénytelen opció!");
                         break;
@@ -83,6 +86,27 @@ namespace IX0WHB.Controllers
             _fileHandler.SaveMatches(_matches);
             Console.WriteLine("Meccsek mentve.");
         }
+
+        private void DeleteMatch()
+        {
+            ConsoleView.ShowMatches(_matches);
+
+            int index = ConsoleView.GetIntegerInput("Add meg a törlendő mérkőzés sorszámát (0-tól kezdődően): ");
+            if (index >= 0 && index < _matches.Count)
+            {
+                Console.WriteLine($"A következő mérkőzés törlésre kerül: {_matches[index]}");
+                _matches.RemoveAt(index);
+
+                SaveMatches();
+
+                Console.WriteLine("Mérkőzés sikeresen törölve.");
+            }
+            else
+            {
+                Console.WriteLine("Érvénytelen index.");
+            }
+        }
+
 
         private void ShowTable()
         {

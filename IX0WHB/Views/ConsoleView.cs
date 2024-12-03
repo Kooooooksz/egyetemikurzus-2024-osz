@@ -11,6 +11,7 @@ namespace IX0WHB.Views
             Console.WriteLine("3. Mérkőzés hozzáadása");
             Console.WriteLine("4. Mentés fájlba");
             Console.WriteLine("5. Tabella megjelenítése");
+            Console.WriteLine("6. Mérkőzés törlése");
             Console.WriteLine("0. Kilépés");
         }
 
