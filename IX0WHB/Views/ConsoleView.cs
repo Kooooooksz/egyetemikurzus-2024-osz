@@ -62,11 +62,18 @@ namespace IX0WHB.Views
             while (true)
             {
                 Console.Write(prompt);
-                if (int.TryParse(Console.ReadLine(), out int result))
+                try
                 {
-                    return result;
+                    if (int.TryParse(Console.ReadLine(), out int result))
+                    {
+                        return result;
+                    }
+                    throw new FormatException("Érvénytelen számformátum.");
                 }
-                Console.WriteLine("Érvénytelen szám, próbáld újra.");
+                catch (FormatException ex)
+                {
+                    Console.WriteLine($"Hiba: {ex.Message}");
+                }
             }
         }
 
@@ -75,18 +82,38 @@ namespace IX0WHB.Views
             while (true)
             {
                 Console.Write(prompt);
-                if (DateTime.TryParse(Console.ReadLine(), out DateTime result))
+                try
                 {
-                    return result;
+                    if (DateTime.TryParse(Console.ReadLine(), out DateTime result))
+                    {
+                        return result;
+                    }
+                    throw new FormatException("Érvénytelen dátumformátum. Használj YYYY-MM-DD formátumot.");
                 }
-                Console.WriteLine("Érvénytelen dátum, próbáld újra (YYYY-MM-DD formátumban).");
+                catch (FormatException ex)
+                {
+                    Console.WriteLine($"Hiba: {ex.Message}");
+                }
             }
         }
 
         public static string GetStringInput(string prompt)
         {
-            Console.Write(prompt);
-            return Console.ReadLine() ?? string.Empty;
+            try
+            {
+                Console.Write(prompt);
+                string input = Console.ReadLine();
+                if (string.IsNullOrWhiteSpace(input))
+                {
+                    throw new ArgumentNullException("A bemenet nem lehet üres.");
+                }
+                return input;
+            }
+            catch (ArgumentNullException ex)
+            {
+                Console.WriteLine($"Hiba: {ex.Message}");
+                return string.Empty;
+            }
         }
     }
 }

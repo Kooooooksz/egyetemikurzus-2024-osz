@@ -55,19 +55,29 @@ namespace IX0WHB.Controllers
 
         private void AddMatch()
         {
-            string homeTeam = ConsoleView.GetStringInput("Hazai csapat neve: ");
-            string awayTeam = ConsoleView.GetStringInput("Vendég csapat neve: ");
-            string place = ConsoleView.GetStringInput("Helyszín: ");
-            DateTime date = ConsoleView.GetDateInput("Dátum (YYYY-MM-DD): ");
-            int homeGoals = ConsoleView.GetIntegerInput("Hazai gólok száma: ");
-            int awayGoals = ConsoleView.GetIntegerInput("Vendég gólok száma: ");
+            try
+            {
+                string homeTeam = ConsoleView.GetStringInput("Hazai csapat neve: ");
+                string awayTeam = ConsoleView.GetStringInput("Vendég csapat neve: ");
+                string place = ConsoleView.GetStringInput("Helyszín: ");
+                DateTime date = ConsoleView.GetDateInput("Dátum (YYYY-MM-DD): ");
+                int homeGoals = ConsoleView.GetIntegerInput("Hazai gólok száma: ");
+                int awayGoals = ConsoleView.GetIntegerInput("Vendég gólok száma: ");
 
-            _matches.Add(new Match(homeTeam, awayTeam, place, date, homeGoals, awayGoals));
+                _matches.Add(new Match(homeTeam, awayTeam, place, date, homeGoals, awayGoals));
+                Console.WriteLine("Meccs hozzáadva:");
+                Console.WriteLine(JsonSerializer.Serialize(_matches, new JsonSerializerOptions { WriteIndented = true }));
 
-            Console.WriteLine("Meccs hozzáadva:");
-            Console.WriteLine(JsonSerializer.Serialize(_matches, new JsonSerializerOptions { WriteIndented = true }));
-
-            SaveMatches();
+                SaveMatches();
+            }
+            catch (FormatException ex)
+            {
+                Console.WriteLine($"Hiba: Érvénytelen adatbevitel. {ex.Message}");
+            }
+            catch (ArgumentNullException ex)
+            {
+                Console.WriteLine($"Hiba: Egy vagy több kötelező mező üres. {ex.Message}");
+            }
         }
 
         private void FilterMatches()
@@ -83,27 +93,44 @@ namespace IX0WHB.Controllers
 
         private void SaveMatches()
         {
-            _fileHandler.SaveMatches(_matches);
-            Console.WriteLine("Meccsek mentve.");
+            try
+            {
+                _fileHandler.SaveMatches(_matches);
+                Console.WriteLine("Meccsek mentve.");
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                Console.WriteLine($"Mentési hiba: Nincs megfelelő jogosultság a fájl mentéséhez. {ex.Message}");
+            }
+            catch (IOException ex)
+            {
+                Console.WriteLine($"Mentési hiba: A fájl írása közben hiba történt. {ex.Message}");
+            }
         }
 
         private void DeleteMatch()
         {
-            ConsoleView.ShowMatches(_matches);
-
-            int index = ConsoleView.GetIntegerInput("Add meg a törlendő mérkőzés sorszámát (0-tól kezdődően): ");
-            if (index >= 0 && index < _matches.Count)
+            try
             {
-                Console.WriteLine($"A következő mérkőzés törlésre kerül: {_matches[index]}");
-                _matches.RemoveAt(index);
+                ConsoleView.ShowMatches(_matches);
+                int index = ConsoleView.GetIntegerInput("Add meg a törlendő mérkőzés sorszámát (0-tól kezdődően): ");
 
-                SaveMatches();
+                if (index >= 0 && index < _matches.Count)
+                {
+                    Console.WriteLine($"A következő mérkőzés törlésre kerül: {_matches[index]}");
+                    _matches.RemoveAt(index);
 
-                Console.WriteLine("Mérkőzés sikeresen törölve.");
+                    SaveMatches();
+                    Console.WriteLine("Mérkőzés sikeresen törölve.");
+                }
+                else
+                {
+                    Console.WriteLine("Hiba: Érvénytelen index.");
+                }
             }
-            else
+            catch (ArgumentOutOfRangeException ex)
             {
-                Console.WriteLine("Érvénytelen index.");
+                Console.WriteLine($"Hiba: Index túlmutat a lista határain. {ex.Message}");
             }
         }
 
