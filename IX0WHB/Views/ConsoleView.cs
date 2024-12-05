@@ -1,7 +1,7 @@
 ﻿using IX0WHB.Models;
 namespace IX0WHB.Views
 {
-    internal static class ConsoleView
+    public static class ConsoleView
     {
         public static void ShowMenu()
         {

@@ -7,7 +7,7 @@ namespace IX0WHB.Controllers
     public class MatchController
     {
         private readonly MatchFileHandler _fileHandler;
-        private readonly List<Match> _matches;
+        internal readonly List<Match> _matches;
 
         public MatchController(string filePath)
         {
@@ -20,40 +20,36 @@ namespace IX0WHB.Controllers
             bool exit = false;
             while (!exit)
             {
-                ConsoleView.ShowMenu();
-                string choice = Console.ReadLine() ?? "0";
-
-                switch (choice)
+                var menuActions = new Dictionary<string, Action>
                 {
-                    case "1":
-                        ConsoleView.ShowMatches(_matches);
-                        break;
-                    case "2":
-                        FilterMatches();
-                        break;
-                    case "3":
-                        AddMatch();
-                        break;
-                    case "4":
-                        SaveMatches();
-                        break;
-                    case "5":
-                        ShowTable();
-                        break;
-                    case "0":
-                        exit = true;
-                        break;
-                    case "6":
-                        DeleteMatch();
-                        break;
-                    default:
+                    { "1", () => ConsoleView.ShowMatches(_matches) },
+                    { "2", FilterMatches },
+                    { "3", AddMatch },
+                    { "4", SaveMatches },
+                    { "5", ShowTable },
+                    { "6", DeleteMatch },
+                    { "0", () => exit = true }
+                };
+
+                while (!exit)
+                {
+                    ConsoleView.ShowMenu();
+                    string choice = Console.ReadLine() ?? "0";
+
+                    if (menuActions.TryGetValue(choice, out var action))
+                    {
+                        action();
+                    }
+                    else
+                    {
                         Console.WriteLine("Érvénytelen opció!");
-                        break;
+                    }
                 }
+
             }
         }
 
-        private void AddMatch()
+        public void AddMatch()
         {
             try
             {
@@ -80,7 +76,7 @@ namespace IX0WHB.Controllers
             }
         }
 
-        private void FilterMatches()
+        public void FilterMatches()
         {
             int minGoals = ConsoleView.GetIntegerInput("Minimum hazai gólok száma: ");
             var filteredMatches = _matches
@@ -91,7 +87,7 @@ namespace IX0WHB.Controllers
             ConsoleView.ShowMatches(filteredMatches);
         }
 
-        private void SaveMatches()
+        public void SaveMatches()
         {
             try
             {
@@ -108,7 +104,7 @@ namespace IX0WHB.Controllers
             }
         }
 
-        private void DeleteMatch()
+        public void DeleteMatch()
         {
             try
             {
@@ -135,7 +131,7 @@ namespace IX0WHB.Controllers
         }
 
 
-        private void ShowTable()
+        public void ShowTable()
         {
             var teamStats = new Dictionary<string, (int Played, int Scored, int Conceded, int Points, int Wins, int Draws, int Losses)>();
 
