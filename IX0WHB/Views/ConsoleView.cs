@@ -9,9 +9,8 @@ namespace IX0WHB.Views
             Console.WriteLine("1. Mérkőzések listázása");
             Console.WriteLine("2. Mérkőzések szűrése hazai gólok szerint");
             Console.WriteLine("3. Mérkőzés hozzáadása");
-            Console.WriteLine("4. Mentés fájlba");
-            Console.WriteLine("5. Tabella megjelenítése");
-            Console.WriteLine("6. Mérkőzés törlése");
+            Console.WriteLine("4. Tabella megjelenítése");
+            Console.WriteLine("5. Mérkőzés törlése");
             Console.WriteLine("0. Kilépés");
         }
 

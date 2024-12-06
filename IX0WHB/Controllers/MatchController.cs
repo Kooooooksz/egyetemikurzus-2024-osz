@@ -25,9 +25,8 @@ namespace IX0WHB.Controllers
                     { "1", () => ConsoleView.ShowMatches(_matches) },
                     { "2", FilterMatches },
                     { "3", AddMatch },
-                    { "4", SaveMatches },
-                    { "5", ShowTable },
-                    { "6", DeleteMatch },
+                    { "4", ShowTable },
+                    { "5", DeleteMatch },
                     { "0", () => exit = true }
                 };
 
@@ -62,7 +61,7 @@ namespace IX0WHB.Controllers
 
                 _matches.Add(new Match(homeTeam, awayTeam, place, date, homeGoals, awayGoals));
                 Console.WriteLine("Meccs hozzáadva:");
-                Console.WriteLine(JsonSerializer.Serialize(_matches, new JsonSerializerOptions { WriteIndented = true }));
+               
 
                 SaveMatches();
             }
