@@ -2,7 +2,7 @@
 
 namespace IX0WHB.Models
 {
-    public class MatchFileHandler
+    internal class MatchFileHandler
     {
         private readonly string _filePath;
 

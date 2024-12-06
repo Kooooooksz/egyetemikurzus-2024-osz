@@ -1,6 +1,6 @@
 ﻿namespace IX0WHB.Models
 {
-    public record Match(
+    internal record Match(
         string HomeTeam,
         string AwayTeam,
         string Place,

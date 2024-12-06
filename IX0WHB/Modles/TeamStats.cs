@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IX0WHB.Models
 {
-    public class TeamStats
+    internal class TeamStats
     {
         public int Position { get; set; }
         public string TeamName { get; set; } = string.Empty;

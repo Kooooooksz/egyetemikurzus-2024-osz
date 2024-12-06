@@ -4,10 +4,10 @@ using IX0WHB.Views;
 
 namespace IX0WHB.Controllers
 {
-    public class MatchController
+    internal class MatchController
     {
         private readonly MatchFileHandler _fileHandler;
-        internal readonly List<Match> _matches;
+        private readonly List<Match> _matches;
 
         public MatchController(string filePath)
         {
